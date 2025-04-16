@@ -20,7 +20,7 @@ export default function DeveloperStatsTable() {
 
   useEffect(() => {
     fetchData(
-      "https://apps.mondus/management-dashboard-backend/?endpoint=dashboard",
+      "https://apps.mondus.group/management-dashboard-backend/?endpoint=dashboard",
       {},
       setLoading,
       setError
