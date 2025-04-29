@@ -2,38 +2,38 @@ import React, { useState, useEffect } from "react";
 import TeamCard from "../components/TeamCard";
 import { Search } from "lucide-react";
 import fetchData from "../utils/fetchData";
+import { useBranch } from "../context/BranchContext";
 
 const TeamsPage = () => {
   const [view, setView] = useState("grid"); // 'grid' or 'list'
+  const { branch } = useBranch();
+  console.log("Branch:", branch);
 
   const [teams, setTeams] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(false)
- 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   // Filter data when search term or year filter changes
   useEffect(() => {
-    fetchData(import.meta.env.VITE_SALES_TEAMS, {}, setLoading, setError)
-    .then((results)=>{
+    fetchData(branch == 'Mondus' ? import.meta.env.VITE_SALES_TEAMS : import.meta.env.VITE_SALES_TEAMS_CFT, {}, setLoading, setError).then(
+      (results) => {
+        if (searchTerm) {
+          results = results.filter(
+            (team) =>
+              team.members.some((member) =>
+                member.name.toLowerCase().includes(searchTerm.toLowerCase())
+              ) ||
+              team.teamName.toLowerCase().includes(searchTerm.toLowerCase())
+          );
+        }
 
-
-      if (searchTerm) {
-        results = results.filter(
-          (team) =>
-            team.members.some((member) =>
-              member.name.toLowerCase().includes(searchTerm.toLowerCase())
-            ) || team.teamName.toLowerCase().includes(searchTerm.toLowerCase())
-        );
+        setFilteredTeams(results);
       }
-  
-      setFilteredTeams(results);
-    })
+    );
+  }, [searchTerm, teams, branch]);
 
-  }, [searchTerm, teams]);
-
-  
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
       <div className="max-w-7xl mx-auto">
@@ -90,34 +90,31 @@ const TeamsPage = () => {
         </div>
 
         {/* Teams Grid */}
-        {  loading  ? (
-            <div className="p-6 text-center text-gray-500 dark:text-gray-400">Loading...</div>
-        ) 
-        :
-            (filteredTeams && filteredTeams.length != 0) ? 
-        <div
-          className={`grid ${
-            view === "grid"
-              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-              : "grid-cols-1"
-          } gap-6`}
-        >
-          {(
-            filteredTeams.map((team, index) => (
+        {loading ? (
+          <div className="p-6 text-center text-gray-500 dark:text-gray-400">
+            Loading...
+          </div>
+        ) : filteredTeams && filteredTeams.length != 0 ? (
+          <div
+            className={`grid ${
+              view === "grid"
+                ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                : "grid-cols-1"
+            } gap-6`}
+          >
+            {filteredTeams.map((team, index) => (
               <TeamCard key={index} team={team} />
-            ))
-          ) }
-        </div>
-        : (
-            <>
-              <div className="mt-10 text-center p-6 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-md">
-                <p className="text-lg font-semibold text-gray-600 dark:text-gray-300">
-                  🚫 There is no team or member matching your search term.
-                </p>
-              </div>
-            </>
-          )
-        }
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="mt-10 text-center p-6 bg-gray-100 dark:bg-gray-800 rounded-2xl shadow-md">
+              <p className="text-lg font-semibold text-gray-600 dark:text-gray-300">
+                🚫 There is no team or member matching your search term.
+              </p>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
