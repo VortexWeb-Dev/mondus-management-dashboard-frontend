@@ -7,7 +7,6 @@ import { useBranch } from "../context/BranchContext";
 const TeamsPage = () => {
   const [view, setView] = useState("grid"); // 'grid' or 'list'
   const { branch } = useBranch();
-  console.log("Branch:", branch);
 
   const [teams, setTeams] = useState([]);
   const [filteredTeams, setFilteredTeams] = useState([]);

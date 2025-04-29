@@ -8,6 +8,7 @@ import {
   DollarSign,
 } from "lucide-react";
 import fetchData from "../utils/fetchData";
+import { useBranch } from "../context/BranchContext";
 
 export default function AgentRankings() {
   const [currentMonth, setCurrentMonth] = useState("jan");
@@ -15,6 +16,8 @@ export default function AgentRankings() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
   const currentYear = new Date().getFullYear();
+
+  const { branch } = useBranch();
 
   const months = [
     "January",
@@ -55,11 +58,15 @@ export default function AgentRankings() {
     // In a real app, this would be an actual API call
     // fetch('/api/rankings')
 
-    fetchData(import.meta.env.VITE_AGENT_RANKINGS, {}, setLoading).then(
-      (rankingData) => {
-        setData(rankingData);
-      }
-    );
+    fetchData(
+      branch == "Mondus"
+        ? import.meta.env.VITE_AGENT_RANKINGS
+        : import.meta.env.VITE_AGENT_RANKINGS_CFT,
+      {},
+      setLoading
+    ).then((rankingData) => {
+      setData(rankingData);
+    });
 
     //   setData(sampleData);
     // setLoading(false);
