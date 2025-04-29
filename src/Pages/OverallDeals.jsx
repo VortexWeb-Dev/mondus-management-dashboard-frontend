@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, Filter, X, Check, ArrowUpDown } from 'lucide-react';
 import fetchData from '../utils/fetchData';
+import { useBranch } from '../context/BranchContext';
 
 const TransactionTable = () => {
   // Data state
   const [transactions, setTransactions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+
+    const { branch } = useBranch();
   
   // Filter states
   const [filters, setFilters] = useState({
@@ -32,7 +35,7 @@ const TransactionTable = () => {
 
   // Fetch data from API
   useEffect(() => {
-    fetchData(import.meta.env.VITE_OVERALL_DEALS, {}, setIsLoading, setError)
+    fetchData(branch == 'Mondus' ? import.meta.env.VITE_OVERALL_DEALS : import.meta.env.VITE_OVERALL_DEALS_CFT, {}, setIsLoading, setError)
       .then((data)=>{
         setTransactions(data)
       })
