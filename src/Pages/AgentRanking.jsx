@@ -70,7 +70,7 @@ export default function AgentRankings() {
 
     //   setData(sampleData);
     // setLoading(false);
-  }, []);
+  }, [branch]);
 
   const handlePrevMonth = () => {
     const prevIndex = (currentMonthIndex - 1 + 12) % 12;

@@ -42,7 +42,7 @@ export default function DeveloperStatsTable() {
         setAvailableDevelopers(["All", ...developers]);
       }
     });
-  }, []);
+  }, [branch]);
 
   // Format currency with commas
   const formatCurrency = (amount) => {

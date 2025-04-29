@@ -39,7 +39,7 @@ const TransactionTable = () => {
       .then((data)=>{
         setTransactions(data)
       })
-  }, []);
+  }, [branch]);
 
   // Get unique years from transactions
   const years = useMemo(() => {

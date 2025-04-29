@@ -30,7 +30,7 @@ const AgentTransactionsTable = () => {
     });
     // setData(agentLastTransactions);
     setFilteredData(data);
-  }, []);
+  }, [branch]);
 
   // Filter data when search term or year filter changes
   useEffect(() => {
