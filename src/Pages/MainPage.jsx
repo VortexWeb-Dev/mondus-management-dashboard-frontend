@@ -4,6 +4,7 @@ import DealTypesChart from "../components/DealTypeStat";
 import DeveloperPropertyPriceChart from "../components/PricePercent";
 import { developerData as mockData } from "./../mockData/mockdata";
 import fetchData from "../utils/fetchData";
+import { useBranch } from "../context/BranchContext";
 
 export default function DeveloperStatsTable() {
   const [data, setData] = useState([]);
@@ -18,9 +19,13 @@ export default function DeveloperStatsTable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { branch } = useBranch();
+
   useEffect(() => {
     fetchData(
-      "https://apps.mondus.group/management-dashboard-backend/?endpoint=dashboard",
+      branch == "Mondus"
+        ? import.meta.env.VITE_DASHBOARD
+        : import.meta.env.VITE_DASHBOARD_CFT,
       {},
       setLoading,
       setError
