@@ -72,6 +72,10 @@ export default function AgentRankings() {
     // setLoading(false);
   }, [branch]);
 
+  if (!data || data.length === 0) {
+    return <div>No data available</div>;
+  }
+
   const handlePrevMonth = () => {
     const prevIndex = (currentMonthIndex - 1 + 12) % 12;
     setCurrentMonth(monthsShort[prevIndex]);

@@ -44,6 +44,10 @@ export default function DeveloperStatsTable() {
     });
   }, [branch]);
 
+  if (!totalData || !data) {
+    return <div>No data available</div>;
+  }
+
   // Format currency with commas
   const formatCurrency = (amount) => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");

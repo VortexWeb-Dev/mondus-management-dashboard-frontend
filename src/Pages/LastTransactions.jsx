@@ -24,13 +24,22 @@ const AgentTransactionsTable = () => {
       {},
       setLoading,
       setError
-    ).then((data) => {
-      console.log(data);
-      setData(data);
-    });
+    )
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        setLoading(false);
+      });
     // setData(agentLastTransactions);
     setFilteredData(data);
   }, [branch]);
+
+  if (!data || data.length === 0) {
+    return <div>No data available</div>;
+  }
 
   // Filter data when search term or year filter changes
   useEffect(() => {
